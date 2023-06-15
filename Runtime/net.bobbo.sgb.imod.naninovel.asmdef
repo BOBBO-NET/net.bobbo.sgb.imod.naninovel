@@ -2,7 +2,8 @@
     "name": "BobboNet.SGB.IMod.Naninovel",
     "references": [
         "BobboNet.SGB.IMod",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "Elringus.Naninovel.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
