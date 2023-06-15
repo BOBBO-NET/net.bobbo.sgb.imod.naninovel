@@ -1,2 +1,2 @@
-# net.bobbo.sgb.imod.naninovel
+# Icy's SGB Mod - Naninovel Plugin
 Naninovel interactions for Icy's SGB mods

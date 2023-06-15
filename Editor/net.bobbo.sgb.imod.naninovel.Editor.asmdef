@@ -1,0 +1,19 @@
+{
+    "name": "BobboNet.Editor.SGB.IMod.Naninovel",
+    "references": [
+        "BobboNet.SGB.IMod",
+        "BobboNet.SGB.IMod.Naninovel",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
