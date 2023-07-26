@@ -8,6 +8,18 @@ namespace BobboNet.SGB.IMod.Naninovel
     public static class FrontendModeManager
     {
         //
+        //  Constructor
+        //
+
+        static FrontendModeManager()
+        {
+            IModOverlay.AddButtonAction("Return to Naninovel", async () =>
+            {
+                await EnterNaninovel();
+            });
+        }
+
+        //
         //  Public Methods
         //
 
@@ -40,15 +52,21 @@ namespace BobboNet.SGB.IMod.Naninovel
 
             // 2. Start or Stop script player.
             var scriptPlayer = Engine.GetService<IScriptPlayer>();
-            if(isActive) {
+            if (isActive)
+            {
                 scriptPlayer.Play();
-            } else {
+            }
+            else
+            {
                 scriptPlayer.Stop();
             }
 
-            // 3. Reset state.
-            var stateManager = Engine.GetService<IStateManager>();
-            await stateManager.ResetStateAsync();
+            // 3. Reset state if necessary
+            if(!isActive)
+            {
+                var stateManager = Engine.GetService<IStateManager>();
+                await stateManager.ResetStateAsync();
+            }
 
             // 4. Set NaniNovel camera active or inactive.
             var naniCamera = Engine.GetService<ICameraManager>().Camera;
