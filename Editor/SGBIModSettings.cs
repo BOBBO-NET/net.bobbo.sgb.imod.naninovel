@@ -12,6 +12,7 @@ namespace BobboNet.Editor.SGB.IMod.Naninovel
     {
         private const float sceneNameWidth = 140;
         private const float headerLeftMargin = 15;
+        private const float elementContentLeftMargin = 30;
         private const float paddingWidth = 10;
 
         private static readonly GUIContent nameContent = new GUIContent("Scene Name", "The name of the UNITY scene to hook into. When this scene is loaded, it will unload from SGB and into the desired Naniscript.");
@@ -60,6 +61,7 @@ namespace BobboNet.Editor.SGB.IMod.Naninovel
             // Specify callbacks to draw the header and elements of the return target list
             returnTargetsReorderableList.drawHeaderCallback = OnDrawReturnTargetListHeader;
             returnTargetsReorderableList.drawElementCallback = OnDrawReturnTargetListElement;
+            returnTargetsReorderableList.elementHeightCallback = OnDrawReturnTargetListHeight;
         }
 
         private void OnDrawReturnTargetListHeader(Rect rect)
@@ -76,23 +78,37 @@ namespace BobboNet.Editor.SGB.IMod.Naninovel
             var sceneNameRect = new Rect(
                 rect.x,
                 rect.y + EditorGUIUtility.standardVerticalSpacing,
-                sceneNameWidth,
+                rect.width,
                 EditorGUIUtility.singleLineHeight
             );
 
             var returnScriptRect = new Rect(
-                rect.x + sceneNameRect.width + paddingWidth,
-                rect.y + EditorGUIUtility.standardVerticalSpacing,
-                rect.width - sceneNameWidth - paddingWidth,
+                rect.x + elementContentLeftMargin,
+                sceneNameRect.y + sceneNameRect.height + EditorGUIUtility.standardVerticalSpacing,
+                rect.width - elementContentLeftMargin,
+                EditorGUIUtility.singleLineHeight
+            );
+
+            var returnLabelRect = new Rect(
+                rect.x + elementContentLeftMargin,
+                returnScriptRect.y + returnScriptRect.height + EditorGUIUtility.standardVerticalSpacing,
+                rect.width - elementContentLeftMargin,
                 EditorGUIUtility.singleLineHeight
             );
 
             var elementProperty = returnTargetsReorderableList.serializedProperty.GetArrayElementAtIndex(index);
             var sceneNameProperty = elementProperty.FindPropertyRelative("sceneName");
             var returnScriptProperty = elementProperty.FindPropertyRelative("returnScript");
+            var returnLabelProperty = elementProperty.FindPropertyRelative("returnLabel");
 
-            EditorGUI.PropertyField(sceneNameRect, sceneNameProperty, GUIContent.none);
-            EditorGUI.PropertyField(returnScriptRect, returnScriptProperty, GUIContent.none);
+            EditorGUI.PropertyField(sceneNameRect, sceneNameProperty);
+            EditorGUI.PropertyField(returnScriptRect, returnScriptProperty);
+            EditorGUI.PropertyField(returnLabelRect, returnLabelProperty);
+        }
+
+        private float OnDrawReturnTargetListHeight(int index)
+        {
+            return (EditorGUIUtility.singleLineHeight * 3) + (EditorGUIUtility.standardVerticalSpacing * 4);
         }
     }
 }
