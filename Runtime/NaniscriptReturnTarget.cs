@@ -3,6 +3,9 @@ using Naninovel;
 
 namespace BobboNet.SGB.IMod.Naninovel
 {
+    /// <summary>
+    /// The Naniscript target of some NaniReturnService action.
+    /// </summary>
     [System.Serializable]
     public class NaniscriptReturnTarget
     {
