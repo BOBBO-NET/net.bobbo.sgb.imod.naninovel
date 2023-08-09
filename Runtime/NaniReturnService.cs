@@ -45,9 +45,16 @@ namespace BobboNet.SGB.IMod.Naninovel
         //  Private Methods
         //
 
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        private async void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            Debug.Log($"Caught scene: {scene.name}");
+            // Get the return targets from our config, and check to see if this scene maps to one
+            var returnTargets = Engine.GetConfiguration<SGBIModConfiguration>().returnTargets;
+            var foundTarget = returnTargets.Find(x => x.sceneName == scene.name);
+
+            // If there's no target for this scene, EXIT EARLY.
+            if (foundTarget == null) return;
+
+            await FrontendModeManager.EnterNaninovel(foundTarget.returnScript);
         }
     }
 }
