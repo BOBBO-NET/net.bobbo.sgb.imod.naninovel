@@ -20,5 +20,10 @@ namespace BobboNet.SGB.IMod.Naninovel
         /// </summary>
         [ResourcePopup(ScriptsConfiguration.DefaultPathPrefix, ScriptsConfiguration.DefaultPathPrefix)]
         public string returnScript = "";
+
+        /// <summary>
+        /// The name of the label in the Naniscript to load into once the desired scene is loaded. Optional.
+        /// </summary>
+        public string returnLabel = "";
     }
 }
