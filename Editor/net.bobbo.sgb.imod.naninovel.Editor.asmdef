@@ -1,0 +1,19 @@
+{
+    "name": "BobboNet.Editor.SGB.IMod.Naninovel",
+    "references": [
+        "BobboNet.SGB.IMod.Naninovel",
+        "Elringus.Naninovel.Runtime",
+        "Elringus.Naninovel.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
