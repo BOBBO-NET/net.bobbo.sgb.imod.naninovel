@@ -38,12 +38,16 @@ namespace BobboNet.SGB.IMod.Naninovel
             // 3. Reset state if necessary
             var stateManager = Engine.GetService<IStateManager>();
             await stateManager.ResetStateAsync();
-            
+
             // 4. Set NaniNovel camera inactive.
             var naniCamera = Engine.GetService<ICameraManager>().Camera;
             naniCamera.enabled = false;
 
-            // 5. Start SGB!
+            // 5. Set NaniNovel audio listener inactive
+            var audioListener = NaniAudioListenerResolver.Find();
+            if (audioListener != null) audioListener.enabled = false;
+
+            // 6. Start SGB!
             await SGBManager.LoadSmileGameAsync(smileGameName);
         }
 
@@ -63,7 +67,11 @@ namespace BobboNet.SGB.IMod.Naninovel
             var naniCamera = Engine.GetService<ICameraManager>().Camera;
             naniCamera.enabled = true;
 
-            // 4. TODO - Unload smile game
+            // 4. Set NaniNovel audio listener active
+            var audioListener = NaniAudioListenerResolver.Find();
+            if (audioListener != null) audioListener.enabled = true;
+
+            // 5. TODO - Unload smile game
             await SGBManager.UnloadSmileGameAsync();
         }
     }
