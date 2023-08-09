@@ -15,7 +15,18 @@ namespace BobboNet.SGB.IMod.Naninovel
         {
             IModOverlay.AddButtonAction("Return to Naninovel", async () =>
             {
-                await EnterNaninovel(Engine.GetService<IScriptManager>().StartGameScriptName);
+                // Load the IMod config, and get the set return script name
+                var config = Engine.GetConfiguration<SGBIModConfiguration>();
+                string returnScriptName = config.overlayReturnScriptName;
+
+                // If there IS no return script setup, default to the engine's starting script
+                if (string.IsNullOrWhiteSpace(returnScriptName))
+                {
+                    returnScriptName = Engine.GetService<IScriptManager>().StartGameScriptName;
+                }
+
+                // Load back into the desired return script in naninovel
+                await EnterNaninovel(returnScriptName);
             });
         }
 
