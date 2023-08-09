@@ -64,7 +64,8 @@ namespace BobboNet.SGB.IMod.Naninovel
             if (foundTarget == null) return;
 
             // Use the return target to determine how we re-enter Naninovel.
-            await FrontendModeManager.EnterNaninovel(foundTarget.returnScript);
+            var returnLabel = string.IsNullOrWhiteSpace(foundTarget.returnLabel) ? null : foundTarget.returnLabel;
+            await FrontendModeManager.EnterNaninovel(foundTarget.returnScript, returnLabel);
         }
     }
 }
