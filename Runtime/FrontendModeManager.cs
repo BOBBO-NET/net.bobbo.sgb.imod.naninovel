@@ -58,7 +58,11 @@ namespace BobboNet.SGB.IMod.Naninovel
             var audioListener = NaniAudioListenerResolver.Find();
             if (audioListener != null) audioListener.enabled = false;
 
-            // 6. Start SGB!
+            // 6. Update SGB's audio state. This is necessary to keep volume levels sync'd
+            var sgbAudioBridge = Engine.GetService<SGBAudioBridgeService>();
+            sgbAudioBridge.SyncSGBAudioState();
+
+            // 7. Start SGB!
             await SGBManager.LoadSmileGameAsync(smileGameName);
         }
 
