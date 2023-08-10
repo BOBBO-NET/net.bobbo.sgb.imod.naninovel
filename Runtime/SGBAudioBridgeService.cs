@@ -53,6 +53,30 @@ namespace BobboNet.SGB.IMod.Naninovel
         }
 
         //
+        //  Public Methods
+        //
+
+        /// <summary>
+        /// Applies the audio mixer's volume levels to SGB's audio settings.
+        /// This is necessary to perform when loading in to an SGB instance, because otherwise
+        /// it will not know about outside audio changes.
+        /// </summary>
+        public void SyncSGBAudioState()
+        {
+            // If we can find the volume handle for the SFX group, apply the current volume to SGB
+            if (audioManager.AudioMixer.GetFloat(mixerHandleVolumeSFX, out float sfxVolumeDb))
+            {
+                SGBAudioSettings.SetVolumeSFXDecibels(sfxVolumeDb);
+            }
+
+            // If we can find the volume handle for the BGM group, apply the current volume to SGB
+            if (audioManager.AudioMixer.GetFloat(mixerHandleVolumeBGM, out float bgmVolumeDb))
+            {
+                SGBAudioSettings.SetVolumeBGMDecibels(bgmVolumeDb);
+            }
+        }
+
+        //
         //  Private Methods
         //
 
@@ -69,6 +93,8 @@ namespace BobboNet.SGB.IMod.Naninovel
             {
                 SGBAudioSettings.SetMixerGroupBGM(groupBGM, mixerHandleVolumeBGM);
             }
+
+            SyncSGBAudioState();
         }
 
         private void DisconnectFromSGB()
