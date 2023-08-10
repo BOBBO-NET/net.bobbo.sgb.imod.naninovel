@@ -63,16 +63,18 @@ namespace BobboNet.SGB.IMod.Naninovel
         /// </summary>
         public void SyncSGBAudioState()
         {
-            // If we can find the volume handle for the SFX group, apply the current volume to SGB
+            // If we can find the volume handle for the SFX group, apply the current volume
             if (audioManager.AudioMixer.GetFloat(mixerHandleVolumeSFX, out float sfxVolumeDb))
             {
                 SGBAudioSettings.SetVolumeSFXDecibels(sfxVolumeDb);
+                audioManager.SfxVolume = VolumeUtils.DbToVolumeFloat(sfxVolumeDb);
             }
 
-            // If we can find the volume handle for the BGM group, apply the current volume to SGB
+            // If we can find the volume handle for the BGM group, apply the current volume
             if (audioManager.AudioMixer.GetFloat(mixerHandleVolumeBGM, out float bgmVolumeDb))
             {
                 SGBAudioSettings.SetVolumeBGMDecibels(bgmVolumeDb);
+                audioManager.BgmVolume = VolumeUtils.DbToVolumeFloat(bgmVolumeDb);
             }
         }
 
