@@ -13,6 +13,12 @@ namespace BobboNet.SGB.IMod.Naninovel
     [InitializeAtRuntime]
     public class SGBAudioBridgeService : IEngineService
     {
+        private const string mixerGroupNameSFX = "SFX";
+        private const string mixerHandleVolumeSFX = "SFX Volume";
+
+        private const string mixerGroupNameBGM = "BGM";
+        private const string mixerHandleVolumeBGM = "BGM Volume";
+
         private IAudioManager audioManager; // Naninovel's audio manager
 
         //
@@ -53,28 +59,28 @@ namespace BobboNet.SGB.IMod.Naninovel
         private void ConnectToSGB()
         {
             // If we can find an SFX mixer group, apply it to SGB
-            if (TryGetMixerGroup(audioManager.AudioMixer, "SFX", out AudioMixerGroup groupSFX))
+            if (TryGetMixerGroup(audioManager.AudioMixer, mixerGroupNameSFX, out AudioMixerGroup groupSFX))
             {
-                SGBAudioSettings.SetMixerGroupSFX(groupSFX);
+                SGBAudioSettings.SetMixerGroupSFX(groupSFX, mixerHandleVolumeSFX);
             }
 
             // If we can find a BGM mixer group, apply it to SGB
-            if (TryGetMixerGroup(audioManager.AudioMixer, "BGM", out AudioMixerGroup groupBGM))
+            if (TryGetMixerGroup(audioManager.AudioMixer, mixerGroupNameBGM, out AudioMixerGroup groupBGM))
             {
-                SGBAudioSettings.SetMixerGroupBGM(groupBGM);
+                SGBAudioSettings.SetMixerGroupBGM(groupBGM, mixerHandleVolumeBGM);
             }
         }
 
         private void DisconnectFromSGB()
         {
             // If the mixer group assigned to SGB's SFX is Naninovel's SFX mixer group, unassign it.
-            if (TryGetMixerGroup(audioManager.AudioMixer, "SFX", out AudioMixerGroup groupSFX) && groupSFX == SGBAudioSettings.GetMixerGroupSFX())
+            if (TryGetMixerGroup(audioManager.AudioMixer, mixerGroupNameSFX, out AudioMixerGroup groupSFX) && groupSFX == SGBAudioSettings.GetMixerGroupSFX())
             {
                 SGBAudioSettings.SetMixerGroupSFX(null);
             }
 
             // If the mixer group assigned to SGB's BGM is Naninovel's BGM mixer group, unassign it.
-            if (TryGetMixerGroup(audioManager.AudioMixer, "BGM", out AudioMixerGroup groupBGM) && groupBGM == SGBAudioSettings.GetMixerGroupBGM())
+            if (TryGetMixerGroup(audioManager.AudioMixer, mixerGroupNameBGM, out AudioMixerGroup groupBGM) && groupBGM == SGBAudioSettings.GetMixerGroupBGM())
             {
                 SGBAudioSettings.SetMixerGroupBGM(null);
             }
