@@ -1,7 +1,4 @@
-using System.Threading.Tasks;
-using UnityEngine;
 using Naninovel;
-using BobboNet.SGB.IMod;
 using System.IO;
 
 namespace BobboNet.SGB.IMod.Naninovel
@@ -21,6 +18,7 @@ namespace BobboNet.SGB.IMod.Naninovel
         {
             public int saveIndex;
             public string serializedState;
+            public System.DateTime saveTime;
         }
 
         //
@@ -53,6 +51,7 @@ namespace BobboNet.SGB.IMod.Naninovel
 
             // Connect to SGB
             SGBSaveManager.SaveDataOverrideFunc = OnSGBSave;
+            SGBSaveManager.ReadSaveInfoOverrideFunc = OnSGBReadSaveInfo;
             SGBSaveManager.LoadDataOverrideFunc = OnSGBLoad;
 
             return UniTask.CompletedTask;
@@ -74,6 +73,7 @@ namespace BobboNet.SGB.IMod.Naninovel
 
             // Disconnect from SGB
             SGBSaveManager.SaveDataOverrideFunc = null;
+            SGBSaveManager.ReadSaveInfoOverrideFunc = null;
             SGBSaveManager.LoadDataOverrideFunc = null;
         }
 
@@ -115,8 +115,11 @@ namespace BobboNet.SGB.IMod.Naninovel
         /// <param name="dataToSave">The raw binary data to be saved.</param>
         private void OnSGBSave(int saveIndex, Stream dataToSave)
         {
-            SGBSaveState newSave = new SGBSaveState();
-            newSave.saveIndex = saveIndex;
+            SGBSaveState newSave = new SGBSaveState
+            {
+                saveIndex = saveIndex,
+                saveTime = System.DateTime.Now
+            };
 
             // Rewind the data to the beginning & convert it to a string we can handle
             using (var conversionBuffer = new MemoryStream())
@@ -126,9 +129,22 @@ namespace BobboNet.SGB.IMod.Naninovel
                 newSave.serializedState = System.Convert.ToBase64String(conversionBuffer.ToArray());
             }
 
-
             // If all is well, update our cached state
             currentSaveState = newSave;
+        }
+
+        /// <summary>
+        /// A callback that's called when SGB wants to know more about a specific save file
+        /// </summary>
+        /// <param name="saveIndex">The index of the save file to query.</param>
+        /// <returns>A class describing information about the given save slot.</returns>
+        private SGBSaveInfo OnSGBReadSaveInfo(int saveIndex)
+        {
+            // If we don't have the requested save file, EXIT EARLY.
+            if (!HasSaveAtIndex(saveIndex)) return SGBSaveInfo.NewEmpty(saveIndex);
+
+            // OTHERWISE, we DO have this save file, so return relevant info
+            return SGBSaveInfo.NewReal(saveIndex, currentSaveState.saveTime);
         }
 
         /// <summary>
@@ -138,17 +154,25 @@ namespace BobboNet.SGB.IMod.Naninovel
         /// <returns>A stream containing the loaded data</returns>
         private Stream OnSGBLoad(int saveIndex)
         {
-            // If we have no cached save states, EXIT
-            if (currentSaveState == null) return null;
-
-            // If our save index mismatches, EXIT
-            if (currentSaveState.saveIndex != saveIndex) return null;
-
-            // If we don't have serialized data, EXIT
-            if (string.IsNullOrEmpty(currentSaveState.serializedState)) return null;
+            // If we don't have a save at the given index, EXIT EARLY
+            if (!HasSaveAtIndex(saveIndex)) return null;
 
             // OTHERWISE - convert our base64 string into some data
             return new MemoryStream(System.Convert.FromBase64String(currentSaveState.serializedState));
+        }
+
+        /// <summary>
+        /// Do we have an SGB save file stored with the given index?
+        /// </summary>
+        /// <param name="saveIndex">The index of the SGB save to look for.</param>
+        /// <returns>true if we have that save, false otherwise.</returns>
+        private bool HasSaveAtIndex(int saveIndex)
+        {
+            if (currentSaveState == null) return false;
+            if (currentSaveState.saveIndex != saveIndex) return false;
+            if (string.IsNullOrEmpty(currentSaveState.serializedState)) return false;
+
+            return true;
         }
     }
 }
