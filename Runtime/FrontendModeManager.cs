@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
-using UnityEngine;
 using Naninovel;
-using BobboNet.SGB.IMod;
+using System;
 
 namespace BobboNet.SGB.IMod.Naninovel
 {
@@ -48,7 +47,8 @@ namespace BobboNet.SGB.IMod.Naninovel
 
             // 3. Reset state if necessary
             var stateManager = Engine.GetService<IStateManager>();
-            await stateManager.ResetStateAsync();
+            var servicesToNotReset = new Type[] { typeof(IStateManager), typeof(SGBSaveBridgeService) };
+            await stateManager.ResetStateAsync(exclude: servicesToNotReset);
 
             // 4. Set NaniNovel camera inactive.
             var naniCamera = Engine.GetService<ICameraManager>().Camera;
