@@ -53,6 +53,8 @@ namespace BobboNet.SGB.IMod.Naninovel
             SGBSaveManager.SaveDataOverrideFunc = OnSGBSave;
             SGBSaveManager.ReadSaveInfoOverrideFunc = OnSGBReadSaveInfo;
             SGBSaveManager.LoadDataOverrideFunc = OnSGBLoad;
+            SGBPauseMenuOptions.SaveButton.IsVisible = false;
+            SGBPauseMenuOptions.SaveButton.IsInteractable = false;
 
             return UniTask.CompletedTask;
         }
@@ -75,6 +77,8 @@ namespace BobboNet.SGB.IMod.Naninovel
             SGBSaveManager.SaveDataOverrideFunc = null;
             SGBSaveManager.ReadSaveInfoOverrideFunc = null;
             SGBSaveManager.LoadDataOverrideFunc = null;
+            SGBPauseMenuOptions.SaveButton.IsVisible = true;
+            SGBPauseMenuOptions.SaveButton.IsInteractable = true;
         }
 
         //
