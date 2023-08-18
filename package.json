@@ -1,6 +1,6 @@
 {
   "name": "net.bobbo.sgb.imod.naninovel",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "Icy's SGB Mods - Naninovel Plugin",
   "author": {
     "name": "BOBBO-NET",
@@ -8,6 +8,6 @@
   },
   "dependencies": {
     "com.unity.inputsystem": "1.6.3",
-    "net.bobbo.sgb.imod": "1.0.0"
+    "net.bobbo.sgb.imod": "1.0.1"
   }
 }
