@@ -8,6 +8,6 @@
   },
   "dependencies": {
     "com.unity.inputsystem": "1.6.3",
-    "net.bobbo.sgb.imod": "1.0.1"
+    "net.bobbo.sgb.imod": "1.1.0"
   }
 }
