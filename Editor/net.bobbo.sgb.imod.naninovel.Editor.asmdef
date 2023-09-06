@@ -1,6 +1,7 @@
 {
     "name": "BobboNet.Editor.SGB.IMod.Naninovel",
     "references": [
+        "BobboNet.SGB.IMod",
         "BobboNet.SGB.IMod.Naninovel",
         "Elringus.Naninovel.Runtime",
         "Elringus.Naninovel.Editor"

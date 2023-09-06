@@ -44,6 +44,7 @@ namespace BobboNet.SGB.IMod.Naninovel
         public UniTask InitializeServiceAsync()
         {
             // Initialize the service here.
+            var configIMod = Engine.GetConfiguration<SGBIModConfiguration>();
 
             // Connect to Naninovel
             stateManager.AddOnGameSerializeTask(OnNaninovelStateSerialize);
@@ -53,8 +54,24 @@ namespace BobboNet.SGB.IMod.Naninovel
             SGBSaveManager.SaveDataOverrideFunc = OnSGBSave;
             SGBSaveManager.ReadSaveInfoOverrideFunc = OnSGBReadSaveInfo;
             SGBSaveManager.LoadDataOverrideFunc = OnSGBLoad;
-            SGBPauseMenuOptions.SaveButton.IsVisible = false;
-            SGBPauseMenuOptions.SaveButton.IsInteractable = false;
+
+            // Apply our config to SGB's pause menu options
+            SGBPauseMenuOptions.ItemsButton.IsVisible = configIMod.itemsButton.isVisible;
+            SGBPauseMenuOptions.ItemsButton.IsInteractable = configIMod.itemsButton.isInteractable;
+            SGBPauseMenuOptions.SkillsButton.IsVisible = configIMod.skillsButton.isVisible;
+            SGBPauseMenuOptions.SkillsButton.IsInteractable = configIMod.skillsButton.isInteractable;
+            SGBPauseMenuOptions.EquipmentButton.IsVisible = configIMod.equipmentButton.isVisible;
+            SGBPauseMenuOptions.EquipmentButton.IsInteractable = configIMod.equipmentButton.isInteractable;
+            SGBPauseMenuOptions.StatusButton.IsVisible = configIMod.statusButton.isVisible;
+            SGBPauseMenuOptions.StatusButton.IsInteractable = configIMod.statusButton.isInteractable;
+            SGBPauseMenuOptions.SaveButton.IsVisible = configIMod.saveButton.isVisible;
+            SGBPauseMenuOptions.SaveButton.IsInteractable = configIMod.saveButton.isInteractable;
+            SGBPauseMenuOptions.ConfigButton.IsVisible = configIMod.configButton.isVisible;
+            SGBPauseMenuOptions.ConfigButton.IsInteractable = configIMod.configButton.isInteractable;
+            SGBPauseMenuOptions.CloseButton.IsVisible = configIMod.closeButton.isVisible;
+            SGBPauseMenuOptions.CloseButton.IsInteractable = configIMod.closeButton.isInteractable;
+            SGBPauseMenuOptions.ExitButton.IsVisible = configIMod.exitButton.isVisible;
+            SGBPauseMenuOptions.ExitButton.IsInteractable = configIMod.exitButton.isInteractable;
 
             return UniTask.CompletedTask;
         }
