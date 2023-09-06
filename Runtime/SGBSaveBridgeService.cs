@@ -54,6 +54,7 @@ namespace BobboNet.SGB.IMod.Naninovel
             SGBSaveManager.SaveDataOverrideFunc = OnSGBSave;
             SGBSaveManager.ReadSaveInfoOverrideFunc = OnSGBReadSaveInfo;
             SGBSaveManager.LoadDataOverrideFunc = OnSGBLoad;
+            SGBSaveManager.MaxSaveFileCount = configIMod.maxSGBSaveSlots;
 
             // Apply our config to SGB's pause menu options
             SGBPauseMenuOptions.ItemsButton.IsVisible = configIMod.itemsButton.isVisible;
