@@ -28,7 +28,7 @@ namespace BobboNet.SGB.IMod.Naninovel
         public UniTask InitializeServiceAsync()
         {
             // Initialize the service here.
-            SceneManager.sceneLoaded += OnSceneLoaded;
+            SGBMapLoadManager.OnPreLoad.AddApprovalSource(OnSGBMapPreload);
 
             return UniTask.CompletedTask;
         }
@@ -41,7 +41,7 @@ namespace BobboNet.SGB.IMod.Naninovel
         public void DestroyService()
         {
             // Stop the service and release any used resources here.
-            SceneManager.sceneLoaded -= OnSceneLoaded;
+            SGBMapLoadManager.OnPreLoad.RemoveApprovalSource(OnSGBMapPreload);
         }
 
         //
@@ -49,23 +49,27 @@ namespace BobboNet.SGB.IMod.Naninovel
         //
 
         /// <summary>
-        /// When a Unity Scene is loaded, read from the SGBIMod config to find out if we should re-enter Naninovel.
-        /// This is meant to be called by the SceneManager.sceneLoaded event.
+        /// When an SGB map is loaded, read from the SGBIMod config to find out if we should re-enter Naninovel.
+        /// This is meant to be called by the SGBMapLoadManager.OnPreLoad event.
         /// </summary>
-        /// <param name="scene">The scene that was just loaded</param>
-        /// <param name="mode">HOW the scene was just loaded</param>
-        private async void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        /// <param name="args"></param>
+        /// <returns></returns>
+        private ApproveEventResult OnSGBMapPreload(SGBMapLoadManager.PreLoadApprovalArgs args)
         {
             // Get the return targets from our config, and check to see if this scene maps to one
             var returnTargets = Engine.GetConfiguration<SGBIModConfiguration>().returnTargets;
-            var foundTarget = returnTargets.Find(x => x.sceneName == scene.name);
+            var foundTarget = returnTargets.Find(x => x.sceneName == args.Map.name);
 
-            // If there's no target for this scene, EXIT EARLY.
-            if (foundTarget == null) return;
+            // If there's no target for this map, approve the load.
+            if (foundTarget == null) return ApproveEventResult.Approve;
 
+            // OTHERWISE - we don't want to actually load this map - we want to load OUT of SGB and into Naninovel.
             // Use the return target to determine how we re-enter Naninovel.
             var returnLabel = string.IsNullOrWhiteSpace(foundTarget.returnLabel) ? null : foundTarget.returnLabel;
-            await FrontendModeManager.EnterNaninovel(foundTarget.returnScript, returnLabel);
+            _ = FrontendModeManager.EnterNaninovel(foundTarget.returnScript, returnLabel);
+
+            // Cancel the loading of this map.
+            return ApproveEventResult.Cancel;
         }
     }
 }

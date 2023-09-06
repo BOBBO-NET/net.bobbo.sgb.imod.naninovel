@@ -35,7 +35,7 @@ namespace BobboNet.SGB.IMod.Naninovel
 
         // Thanks to the NaniNovel docs for implementing this nearly verbatim
         // (https://naninovel.com/guide/integration-options.html#switching-modes)
-        public static async Task EnterSGBGame(string smileGameName, int saveFile = -1, IMod.SGBManager.EntryMapParameters mapLoadParams = null)
+        public static async Task EnterSGBGame(string smileGameName, int saveFile = -1, IMod.LoadSGBMapArgs mapLoadParams = null)
         {
             // 1. Set Naninovel input inactive.
             var inputManager = Engine.GetService<IInputManager>();
