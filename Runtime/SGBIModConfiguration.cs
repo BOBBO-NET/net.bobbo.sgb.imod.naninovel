@@ -28,6 +28,10 @@ namespace BobboNet.SGB.IMod.Naninovel
         [ResourcePopup(ScriptsConfiguration.DefaultPathPrefix, ScriptsConfiguration.DefaultPathPrefix, ResourcePopupAttribute.EmptyValue)]
         public string overlayReturnScriptName = "";
 
+        [Header("SGB Fonts")]
+        [Tooltip("A custom font to use when running SGB.")]
+        public Font customTextFont = null;
+
         [Header("SGB Save Files")]
         [Tooltip("How many save slots SGB will display at max.")]
         public int maxSGBSaveSlots = 40;
