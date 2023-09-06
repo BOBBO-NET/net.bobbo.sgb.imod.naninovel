@@ -36,8 +36,8 @@ public class EnterSGBProject : Command
         int saveIndex = Assigned(SaveIndex) ? SaveIndex.Value : 0;
 
         // Determine the map loading parameters, if any
-        BobboNet.SGB.IMod.SGBManager.EntryMapParameters mapLoadParams = null;
-        if (Assigned(MapName)) mapLoadParams = new SGBManager.EntryMapParameters
+        LoadSGBMapArgs mapLoadParams = null;
+        if (Assigned(MapName)) mapLoadParams = new LoadSGBMapArgs
         {
             MapName = MapName.Value,
             StartPosition = new Vector2Int(MapStartPositionX.Value, MapStartPositionY.Value),
