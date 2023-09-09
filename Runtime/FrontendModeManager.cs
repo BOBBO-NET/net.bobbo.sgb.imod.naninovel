@@ -70,28 +70,29 @@ namespace BobboNet.SGB.IMod.Naninovel
         // (https://naninovel.com/guide/integration-options.html#switching-modes)
         public static async Task EnterNaninovel(string entryScriptName, string entryLabel = null)
         {
-            // 1. Set Naninovel input active.
-            var inputManager = Engine.GetService<IInputManager>();
-            inputManager.ProcessInput = true;
+            // 1. Unload smile game. Do this first so that we can properly kill everything SGB related.
+            await SGBManager.UnloadSmileGameAsync();
 
-            // 2. Start the script player.
-            var scriptPlayer = Engine.GetService<IScriptPlayer>();
-            await scriptPlayer.PreloadAndPlayAsync(entryScriptName, label: entryLabel);
-
-            // 3. Set NaniNovel camera active.
+            // 2. Set NaniNovel camera active.
             var naniCamera = Engine.GetService<ICameraManager>().Camera;
             naniCamera.enabled = true;
 
-            // 4. Set NaniNovel audio listener active
+            // 3. Set NaniNovel audio listener active
             var audioListener = NaniAudioListenerResolver.Find();
             if (audioListener != null) audioListener.enabled = true;
 
-            // 5. Update the audio sync state. This is necessary to keep volume levels sync'd
+            // 4. Update the audio sync state. This is necessary to keep volume levels sync'd
             var sgbAudioBridge = Engine.GetService<SGBAudioBridgeService>();
             sgbAudioBridge.SyncSGBAudioState();
 
-            // 6. TODO - Unload smile game
-            await SGBManager.UnloadSmileGameAsync();
+            // 5. Start the script player and load assets. This may take a second.
+            var scriptPlayer = Engine.GetService<IScriptPlayer>();
+            await scriptPlayer.PreloadAndPlayAsync(entryScriptName, label: entryLabel);
+
+            // 6. Set Naninovel input active. We do this last so that if there's a stutter,
+            // then we let it resolve before taking input.
+            var inputManager = Engine.GetService<IInputManager>();
+            inputManager.ProcessInput = true;
         }
     }
 }
