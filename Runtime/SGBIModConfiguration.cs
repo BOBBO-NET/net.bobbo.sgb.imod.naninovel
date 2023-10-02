@@ -31,6 +31,7 @@ namespace BobboNet.SGB.IMod.Naninovel
         [Header("SGB Fonts")]
         [Tooltip("A custom font to use when running SGB.")]
         public Font customTextFont = null;
+        public List<SGBFontTarget> fontTargets = new List<SGBFontTarget>();
 
         [Header("SGB Save Files")]
         [Tooltip("How many save slots SGB will display at max.")]
