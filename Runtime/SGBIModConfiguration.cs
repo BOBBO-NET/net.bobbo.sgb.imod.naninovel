@@ -29,8 +29,8 @@ namespace BobboNet.SGB.IMod.Naninovel
         public string overlayReturnScriptName = "";
 
         [Header("SGB Fonts")]
-        [Tooltip("A custom font to use when running SGB.")]
-        public Font customTextFont = null;
+        [Tooltip("Custom fonts to use when running SGB projects.")]
+        public List<SGBFontTarget> fontTargets = new List<SGBFontTarget>();
 
         [Header("SGB Save Files")]
         [Tooltip("How many save slots SGB will display at max.")]
