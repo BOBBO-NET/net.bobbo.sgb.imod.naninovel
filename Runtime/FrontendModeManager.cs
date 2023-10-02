@@ -62,7 +62,18 @@ namespace BobboNet.SGB.IMod.Naninovel
             var sgbAudioBridge = Engine.GetService<SGBAudioBridgeService>();
             sgbAudioBridge.SyncSGBAudioState();
 
-            // 7. Start SGB!
+            // 7. Apply the font if necessary
+            var fontBridge = Engine.GetService<SGBFontBridgeService>();
+            if (fontBridge.TryGetFontTarget(smileGameName, out SGBFontTarget fontTarget))
+            {
+                fontBridge.SetFont(fontTarget.font);
+            }
+            else
+            {
+                fontBridge.SetFont(fontBridge.GetDefaultFont());
+            }
+
+            // 8. Start SGB!
             await SGBManager.LoadSmileGameAsync(smileGameName, saveFile, mapLoadParams);
         }
 
