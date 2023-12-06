@@ -21,7 +21,7 @@ namespace BobboNet.SGB.IMod.Naninovel
                 // If there IS no return script setup, default to the engine's starting script
                 if (string.IsNullOrWhiteSpace(returnScriptName))
                 {
-                    returnScriptName = Engine.GetService<IScriptManager>().StartGameScriptName;
+                    returnScriptName = Engine.GetConfiguration<ScriptsConfiguration>().StartGameScript;
                 }
 
                 // Load back into the desired return script in naninovel
