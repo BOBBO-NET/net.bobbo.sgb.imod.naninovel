@@ -48,7 +48,7 @@ namespace BobboNet.SGB.IMod.Naninovel
             // 3. Reset state if necessary
             var stateManager = Engine.GetService<IStateManager>();
             var servicesToNotReset = new Type[] { typeof(IStateManager), typeof(SGBSaveBridgeService) };
-            await stateManager.ResetStateAsync(exclude: servicesToNotReset);
+            await stateManager.ResetState(exclude: servicesToNotReset);
 
             // 4. Set NaniNovel camera inactive.
             var naniCamera = Engine.GetService<ICameraManager>().Camera;
@@ -98,7 +98,7 @@ namespace BobboNet.SGB.IMod.Naninovel
 
             // 5. Start the script player and load assets. This may take a second.
             var scriptPlayer = Engine.GetService<IScriptPlayer>();
-            await scriptPlayer.PreloadAndPlayAsync(entryScriptName, label: entryLabel);
+            await scriptPlayer.LoadAndPlayAtLabel(entryScriptName, entryLabel);
 
             // 6. Set Naninovel input active. We do this last so that if there's a stutter,
             // then we let it resolve before taking input.

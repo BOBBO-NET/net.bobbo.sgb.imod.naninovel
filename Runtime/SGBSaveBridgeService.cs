@@ -41,7 +41,7 @@ namespace BobboNet.SGB.IMod.Naninovel
         //  Interface Methods
         //
 
-        public UniTask InitializeServiceAsync()
+        public UniTask InitializeService()
         {
             // Initialize the service here.
             var configIMod = Engine.GetConfiguration<SGBIModConfiguration>();
